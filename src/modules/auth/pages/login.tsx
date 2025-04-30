@@ -30,7 +30,7 @@ export function Login() {
   const { control, handleSubmit } = useForm<LoginData>({
     defaultValues: {
       email: '',
-      senha: '',
+      password: '',
     },
     resolver: zodResolver(loginSchema),
   });
@@ -48,7 +48,7 @@ export function Login() {
 
   return (
     <>
-      <UnauthenticatedContentHeader title='Bem vindo!' description='Acesse sua conta abaixo.' />
+      <UnauthenticatedContentHeader title='Bem vindo!' description='Digite seu e-mail e senha para acessar.' />
 
       <Stack component='form' width='100%' gap={3} onSubmit={handleSubmit(handleLogin)}>
         <UnauthenticatedContentAlert
@@ -75,7 +75,7 @@ export function Login() {
           }}
         />
 
-        <ControlledPassword label='Senha' name='senha' size='medium' control={control} />
+        <ControlledPassword label='Senha' name='password' size='medium' control={control} />
 
         <LoadingButton
           loading={loading}
@@ -84,7 +84,7 @@ export function Login() {
           type='submit'
           size='large'
         >
-          ENTRAR
+          ACESSAR
         </LoadingButton>
       </Stack>
 

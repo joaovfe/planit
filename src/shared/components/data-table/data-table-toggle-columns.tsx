@@ -27,7 +27,7 @@ export function DataTableToggleColumns({
     : pathname;
 
   const [localStorageItem, setLocalStorageItem] = useLocalStorage<Record<string, IOption<boolean>>>(
-    `@omega/table_columns${pagePathname}`,
+    `@planit/table_columns${pagePathname}`,
     {},
   );
 

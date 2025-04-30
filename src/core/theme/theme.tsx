@@ -28,7 +28,7 @@ const ThemeContext = createContext<ITheme>({
 
 export function ThemeProvider({ children }: PropsWithChildren) {
   const [mode, setMode] = useLocalStorage<PaletteMode>(
-    '@omega/theme-mode',
+    '@planit/theme-mode',
     useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light',
   );
 
