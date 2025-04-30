@@ -23,7 +23,7 @@ export function UnauthenticatedFooter() {
             cursor: 'pointer',
           }}
         >
-          Omega
+          Joaovfe
         </Link>
       </Typography>
 

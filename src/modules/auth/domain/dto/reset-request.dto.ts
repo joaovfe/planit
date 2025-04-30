@@ -1,4 +1,4 @@
 export interface ResetRequestDTO {
   token: string;
-  senha: string;
+  password: string;
 }

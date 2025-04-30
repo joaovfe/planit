@@ -50,7 +50,7 @@ export function AuthProvider({ children }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
 
   const [_auth, setLocalStorage, clearLocalStorage] = useLocalStorage<LoginResponseDTO>(
-    '@omega/auth',
+    '@planit/auth',
     { token: '' }
   );
 
