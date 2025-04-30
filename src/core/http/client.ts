@@ -51,7 +51,7 @@ async function handleAxiosResponseError(error: AxiosError) {
 }
 
 export const Client = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL_API ?? 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_BASE_URL_API ?? 'http://localhost:8000',
   // withCredentials: true,
   timeout: 30000,
   timeoutErrorMessage: 'O servidor não está respondendo, tente novamente mais tarde.',

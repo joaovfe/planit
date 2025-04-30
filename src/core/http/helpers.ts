@@ -3,19 +3,19 @@ import { EUnauthenticatedPath } from '../router';
 import { Client } from './client';
 
 export function getToken(): string {
-  const item: string | null = localStorage.getItem('@omega/auth');
+  const item: string | null = localStorage.getItem('@planit/auth');
   const token: string | undefined = item ? JSON.parse(item)['token'] : 'none';
 
   return token ?? 'none';
 }
 
 export async function refreshToken() {
-  const item: string | null = localStorage.getItem('@omega/auth');
+  const item: string | null = localStorage.getItem('@planit/auth');
   console.log('item: ', item);
   const refreshToken: string | undefined = item ? JSON.parse(item)['refreshToken'] : 'none';
 
   if (!refreshToken) {
-    return localStorage.removeItem('@omega/auth');
+    return localStorage.removeItem('@planit/auth');
   }
 
   const { status, data } = await Client.post<LoginResponseDTO>('/auth/refresh', {
@@ -23,10 +23,10 @@ export async function refreshToken() {
   });
 
   if (status >= 200 && status < 300) {
-    return localStorage.setItem('@omega/auth', JSON.stringify(data));
+    return localStorage.setItem('@planit/auth', JSON.stringify(data));
   }
 
-  return localStorage.removeItem('@omega/auth');
+  return localStorage.removeItem('@planit/auth');
 }
 
 export function redirect(message?: string) {
