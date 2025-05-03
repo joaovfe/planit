@@ -3,10 +3,8 @@ import { User } from '@/modules/user/domain';
 
 import {
   LoginRequestDTO,
-  ResetRequestDTO,
   LoginResponseDTO,
-  RecoverRequestDTO,
-  SignUpDTO,
+  SignUpDTO
 } from '../domain';
 import { ConfirmRequestDTO } from '../domain/dto/confirm-request.dto';
 

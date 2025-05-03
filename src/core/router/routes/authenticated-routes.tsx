@@ -1,18 +1,15 @@
 import {
   AccountCircleSharp,
-  HomeOutlined,
-  Settings
+  HomeOutlined
 } from '@mui/icons-material';
 import { Navigate } from 'react-router-dom';
 
 import { EAuthenticatedPath } from '../domain/enums/authenticated-path.enum';
 import { IRoute } from '../domain/interfaces/route.interface';
 
+import { DestinationCreate } from '@/modules/home/destination/pages/components/create/destination-create';
 import { Home } from '@/modules/home/pages/home';
-import { UserList, UserUpdate } from '@/modules/user/pages';
-import { ClockIcon } from '@mui/x-date-pickers';
-import { RequiredAbility } from '../hocs/required-ability';
-import { EAbilityCodes } from '@/modules/role/domain';
+import { DestinationList } from '@/modules/home/destination/pages/destination';
 
 export const AUTHENTICATED_ROUTES: Array<IRoute> = [
   {
@@ -28,62 +25,27 @@ export const AUTHENTICATED_ROUTES: Array<IRoute> = [
     path: EAuthenticatedPath.HOME,
   },
   {
-    name: 'Histórico',
-    icon: <HomeOutlined />,
-    element: <Home />,
-    path: EAuthenticatedPath.HOME,
-  },
-  {
-    name: 'Funcionários',
-    icon: <HomeOutlined />,
-    element: <Home />,
-    path: EAuthenticatedPath.HOME,
-  },
-  {
-    name: 'Produções',
-    icon: <HomeOutlined />,
-    element: <Home />,
-    path: EAuthenticatedPath.HOME,
-  },
-  {
-    name: 'Histórico',
-    icon: <ClockIcon />,
-    path: EAuthenticatedPath.HISTORY,
-    ability: EAbilityCodes.HISTORY,
-    element: <RequiredAbility code={EAbilityCodes.ROLES} />, // todo: hoc of required ability
-  },
-  {
-    name: 'Clientes',
+    name: 'Destinos',
     icon: <AccountCircleSharp />,
-    path: EAuthenticatedPath.CLIENTS,
-    ability: EAbilityCodes.CLIENTS,
-    element: <RequiredAbility code={EAbilityCodes.ROLES} />,
+    path: EAuthenticatedPath.DESTINATION,
     children: [
       {
         index: true,
-        name: "Clientes",
-        element: <UserList />
+        name: 'Destino',
+        element: <DestinationList />,
       },
       {
-        name: 'Ver Usuário',
+        name: 'Criar Destino',
         hidden: true,
-        path: ':id',
-        element: <RequiredAbility code={EAbilityCodes.USERS} />,
+        path: 'novo',
         children: [
           {
-            name: 'Ver Usuário',
+            name: 'Criar Destino',
             index: true,
-            element: <UserUpdate />,
+            element: <DestinationCreate />,
           },
         ],
       },
-    ] // todo: hoc of required ability
+    ],
   },
-  {
-    name: 'Configurações',
-    icon: <Settings />,
-    path: EAuthenticatedPath.USER_SETTINGS,
-    ability: EAbilityCodes.ROLES,
-    element: <RequiredAbility code={EAbilityCodes.ROLES} />, // todo: hoc of required ability
-  }
 ];

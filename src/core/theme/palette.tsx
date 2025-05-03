@@ -4,10 +4,10 @@ export const palette: Record<PaletteMode, PaletteOptions> = {
   light: {
     mode: 'light',
     primary: {
-      main: '#FF0000',
+      main: '#F2620F',
     },
     secondary: {
-      main: '#282C34',
+      main: '#F28B30',
     },
     success: {
       main: '#2B9535',
@@ -28,7 +28,7 @@ export const palette: Record<PaletteMode, PaletteOptions> = {
   dark: {
     mode: 'dark',
     primary: {
-      main: '#FF0000',
+      main: '#F2620F',
     },
     secondary: {
       main: '#282C34',
