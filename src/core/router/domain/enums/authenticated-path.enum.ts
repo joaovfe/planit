@@ -1,6 +1,6 @@
 export enum EAuthenticatedPath {
   HOME = '/',
-  FORNOS = '/fornos',
+  DESTINATION = '/destino',
   DEVICE = '/dispositivos',
   HISTORY = '/historico',
   CLIENTS = '/clientes',

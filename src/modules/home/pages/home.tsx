@@ -1,6 +1,6 @@
 // import { useAuth } from '@/modules/auth/hooks';
 // import { useProductivePhaseListParams } from '@/modules/company/hooks/productive-phase-list-params.hook';
-import { LinkButton, Page, PageButtons, PageCard, PageHeader, PageTitle } from '@/shared/components';
+import { LinkButton, Page, PageButtons, PageHeader, PageTitle } from '@/shared/components';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 // import useSWR from 'swr';
 // import { ProductivePhaseListTable } from '../components/productive-phase-list-table';
@@ -46,7 +46,7 @@ export function Home() {
         <PageTitle toHome>Minhas Produções</PageTitle>
         <PageButtons>
           <LinkButton to='./novo' variant='contained' size='large' sx={{ minWidth: '180px' }}>
-            Nova Produção
+            Nova Viagem
           </LinkButton>
         </PageButtons>
         <Grid spacing={3} container>
@@ -54,7 +54,7 @@ export function Home() {
             <Card variant='outlined' sx={{ borderRadius: 2, flexGrow: 1, boxShadow: 1 }}>
               <CardContent>
                 <Typography variant='h6' component='div'>
-                  Total de produções
+                  Viagens cadastradas
                 </Typography>
                 <Typography variant='h5' color={'primary'}>
                   {cards.countAllAssets}

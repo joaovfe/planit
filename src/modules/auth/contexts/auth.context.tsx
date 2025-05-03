@@ -1,21 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ReactNode, createContext, useReducer, useState, useEffect, useMemo } from 'react';
+import { ReactNode, createContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 
 import { EUnauthenticatedPath } from '@/core/router';
 
+import { toast } from 'react-toastify';
 import {
-  IAuth,
-  IUseAuth,
-  IAuthAction,
   EAuthAction,
-  LoginResponseDTO,
+  IAuth,
+  IAuthAction,
+  IUseAuth,
   LoginRequestDTO,
-  RecoverRequestDTO,
+  LoginResponseDTO
 } from '../domain';
 import { AuthRepository } from '../repositories';
-import { toast } from 'react-toastify';
 
 interface Props {
   children: ReactNode;
