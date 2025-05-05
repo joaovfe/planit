@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { EDestinationType } from '../enums/destination-type.enum';
 
 export const destinationCreateSchema = z.object({
   name: z
@@ -8,8 +7,11 @@ export const destinationCreateSchema = z.object({
   description: z
     .string({ required_error: 'Descrição do destino é obrigatória!' })
     .min(5, 'Descrição deve ter no mínimo 5 caracteres'),
-  type: z.nativeEnum(EDestinationType, { required_error: 'Tipo de destino é obrigatório!' }),
-//   status: z.nativeEnum(EDestinationType, { required_error: 'Status é obrigatório!' }),
+  type: z.object({
+    id: z.number().int().positive(), // Garantindo que o id seja um número inteiro e positivo
+    name: z.string().min(1, 'O nome do destino não pode ser vazio'), // Garantindo que o nome seja uma string não vazia
+  }),
+  //   status: z.nativeEnum(EDestinationType, { required_error: 'Status é obrigatório!' }),
 });
 
 export type DestinationCreateData = z.infer<typeof destinationCreateSchema>;

@@ -15,7 +15,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { DestinationCreateDto } from '../../../domain/dto/destination-create.dto';
-import { EDestinationType } from '../../../domain/enums/destination-type.enum';
 import { DestinationCreateData, destinationCreateSchema } from '../../../domain/schemas/destination-create.schema';
 import { DestinationRepository } from '../../../repositories/destination.repository';
 import { DestinationCreateForm } from './destination-create-form';
@@ -54,7 +53,7 @@ export function DestinationCreate() {
     async function submit(data: DestinationCreateDto) {
         const user = {
             name: data.name,
-            type: EDestinationType.City,
+            type: data.type.name,
             description: data.description
         };
         create(user);

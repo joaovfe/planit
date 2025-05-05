@@ -11,7 +11,7 @@ export class DestinationRepository extends Repository {
   static instance: DestinationRepository;
 
   constructor() {
-    super('fornos');
+    super('destino');
 
     if (DestinationRepository.instance) {
       return DestinationRepository.instance;
@@ -19,31 +19,10 @@ export class DestinationRepository extends Repository {
 
     DestinationRepository.instance = this;
   }
+  public async list(): Promise<DestinationDto[]> {
+    const { status, data } = await this.http.get('');
 
-  public async list(params: DestinationListDTO): Promise<IPaginationResponse<DestinationEntity>> {
-    const { status, data: response } = await this.http.get<IPaginationResponse<DestinationEntity>>(
-      '',
-      {
-        params: {
-          ...params.filter,
-          ...params.pagination,
-        },
-      },
-    );
-
-    if (this.isOK(status)) {
-      const { pages, total, data } = response;
-
-      return {
-        pages: pages ?? 1,
-        total: total ?? 0,
-        data: isArray(data)
-          ? data.map((item) => {
-              return new DestinationEntity(item);
-            })
-          : ([] as Array<DestinationEntity>),
-      };
-    }
+    if (this.isOK(status)) return data as DestinationDto[];
 
     throw new Error('Ops, algo inesperado aconteceu!');
   }

@@ -1,4 +1,4 @@
-import { EDestinationType } from '../enums/destination-type.enum';
+import { EDestinationType } from './destination-type.dto';
 
 export interface DestinationCreateDto {
   name: string;
