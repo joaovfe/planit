@@ -20,7 +20,6 @@ export function ControlledDate(props: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <DatePicker
-        disableFuture
         {...props}
         {...field}
         onChange={(value: DateTime<boolean> | null) => field.onChange(value ? value.toJSDate() : undefined)}

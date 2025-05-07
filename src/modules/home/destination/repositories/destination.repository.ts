@@ -1,11 +1,9 @@
 import { Repository } from '@/core/http/repository';
 
-import { ID, IPaginationResponse } from '@/shared/domain';
-import { isArray } from '@/shared/utils';
-import { DestinationEntity } from '../domain/entities/destination.entity';
-import { DestinationListDTO } from '../domain/dto/destination-list.dto';
-import { DestinationDto } from '../domain/dto/destination.dto';
+import { ID } from '@/shared/domain';
 import { DestinationCreateDto } from '../domain/dto/destination-create.dto';
+import { DestinationDto } from '../domain/dto/destination.dto';
+import { DestinationEntity } from '../domain/entities/destination.entity';
 
 export class DestinationRepository extends Repository {
   static instance: DestinationRepository;
@@ -27,13 +25,13 @@ export class DestinationRepository extends Repository {
     throw new Error('Ops, algo inesperado aconteceu!');
   }
 
-  //   public async get(id: ID): Promise<User> {
-  //     const { status, data } = await this.http.get<User>(`/${id}`);
+  public async get(id: ID): Promise<DestinationEntity> {
+    const { status, data } = await this.http.get<DestinationEntity>(`/${id}`);
 
-  //     if (this.isOK(status)) return new User(data);
+    if (this.isOK(status)) return new DestinationEntity(data);
 
-  //     throw new Error('Ops, algo inesperado aconteceu!');
-  //   }
+    throw new Error('Ops, algo inesperado aconteceu!');
+  }
 
   public async create(record: DestinationCreateDto): Promise<DestinationEntity> {
     const { status, data } = await this.http.post<DestinationEntity, DestinationCreateDto>(

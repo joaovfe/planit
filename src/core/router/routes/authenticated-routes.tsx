@@ -7,8 +7,9 @@ import { Navigate } from 'react-router-dom';
 import { EAuthenticatedPath } from '../domain/enums/authenticated-path.enum';
 import { IRoute } from '../domain/interfaces/route.interface';
 
-import { DestinationCreate } from '@/modules/home/destination/pages/components/create/destination-create';
+import { TripCreate } from '@/modules/trips/pages/create/trips-create';
 import { Home } from '@/modules/home/pages/home';
+import { TripsList } from '@/modules/trips/pages/list/trips-list';
 // import { DestinationList } from '@/modules/home/destination/pages/destination';
 
 export const AUTHENTICATED_ROUTES: Array<IRoute> = [
@@ -29,11 +30,11 @@ export const AUTHENTICATED_ROUTES: Array<IRoute> = [
     icon: <AccountCircleSharp />,
     path: EAuthenticatedPath.DESTINATION,
     children: [
-      // {
-      //   index: true,
-      //   name: 'Destino',
-      //   element: <DestinationList />,
-      // },
+      {
+        index: true,
+        name: 'Viages',
+        element: <TripsList />,
+      },
       {
         name: 'Criar Viagem',
         hidden: true,
@@ -42,7 +43,7 @@ export const AUTHENTICATED_ROUTES: Array<IRoute> = [
           {
             name: 'Criar Viagem',
             index: true,
-            element: <DestinationCreate />,
+            element: <TripCreate />,
           },
         ],
       },

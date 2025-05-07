@@ -11,35 +11,50 @@ import {
 import { formatErrorForNotification } from '@/shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { DestinationCreateDto } from '../../../domain/dto/destination-create.dto';
-import { DestinationCreateData, destinationCreateSchema } from '../../../domain/schemas/destination-create.schema';
-import { DestinationRepository } from '../../../repositories/destination.repository';
-import { DestinationCreateForm } from './destination-create-form';
+import { CreateTripDto } from '../../domain/dto/create-trip.dto';
+import { TripCreateData, tripCreateSchema } from '../../domain/schemas/trip-create.schema';
+import { TripRepository } from '../../repositories/trips.repository';
+import { TripCreateForm } from './components/trips-create-form';
 
-export function DestinationCreate() {
+interface FormWithTrip extends FieldValues {
+    trip: TripCreateData;
+}
+
+
+export function TripCreate() {
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
-    const userRepository = new DestinationRepository();
+    const repository = new TripRepository();
 
-    const methods = useForm<DestinationCreateData>({
+    const methods = useForm<FormWithTrip>({
         defaultValues: {
-            name: '',
-            description: '',
-
+            trip: {
+                name: '',
+                state: '',
+                city: '',
+                participants: [],
+                destination: {},
+                startDate: null,
+                endDate: null,
+            }
         },
-        resolver: zodResolver(destinationCreateSchema),
+        resolver: zodResolver(tripCreateSchema
+
+        ),
     });
 
-    async function create(data: DestinationCreateDto) {
+    async function create(data: CreateTripDto) {
         if (loading) return;
 
         try {
             setLoading(true);
 
-            await userRepository.create(data);
+            console.log('data: ', data);
+
+            await repository.create(data);
 
             toast.success('Usuário cadastrado com sucesso!');
             navigate(EAuthenticatedPath.USERS);
@@ -50,13 +65,22 @@ export function DestinationCreate() {
         }
     }
 
-    async function submit(data: DestinationCreateDto) {
-        const user = {
-            name: data.name,
-            type: data.type.name,
-            description: data.description
+    async function submit(data: FormWithTrip) {
+
+        console.log('data: ', data);
+
+        const trip = {
+            name: data.trip.name,
+            country: data.trip.country,
+            state: data.trip.state,
+            destination: data.trip.destination,
+            participants: data.trip.participants,
+            startDate: data.trip.startDate,
+            endDate: data.trip.endDate,
+            city: data.trip.city,
         };
-        create(user);
+        
+        create(trip);
     }
 
     function alertMessage(error: any) {
@@ -68,7 +92,7 @@ export function DestinationCreate() {
     return (
         <Page>
             <PageHeader>
-                <PageTitle toHome>Novo Destino</PageTitle>
+                <PageTitle toHome>Nova Viagem</PageTitle>
 
                 <PageButtons>
                     <LinkButton to='/destino' variant='outlined' size='large' sx={{ minWidth: '180px' }}>
@@ -89,7 +113,7 @@ export function DestinationCreate() {
 
             <PageCard>
                 <FormProvider {...methods}>
-                    <DestinationCreateForm />
+                    <TripCreateForm />
                 </FormProvider>
             </PageCard>
         </Page>

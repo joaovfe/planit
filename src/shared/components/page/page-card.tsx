@@ -1,8 +1,12 @@
-import { Paper, PaperProps } from '@mui/material';
+import { Paper } from '@mui/material';
 
-interface PageCardProps extends PaperProps {}
+interface PageCardProps {
+  children: React.ReactNode;
+  sx?: object;
+  onClick?: () => void;
+}
 
-export function PageCard({ children, sx }: PageCardProps) {
+export function PageCard({ children, sx, onClick }: PageCardProps) {
   return (
     <Paper
       sx={{
@@ -15,6 +19,7 @@ export function PageCard({ children, sx }: PageCardProps) {
         gap: 3,
         ...sx,
       }}
+      onClick={onClick}  // Passando onClick para o Paper
     >
       {children}
     </Paper>

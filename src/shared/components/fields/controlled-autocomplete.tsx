@@ -11,7 +11,7 @@ import { Info } from '@mui/icons-material';
 
 interface ControlledAutocompleteProps
   extends UseControllerProps<any>,
-    Omit<AutocompleteProps<any, any, any, any>, 'defaultValue' | 'name' | 'renderInput'> {
+  Omit<AutocompleteProps<any, any, any, any>, 'defaultValue' | 'name' | 'renderInput'> {
   label?: string;
   placeholder?: string;
   tooltip?: () => string;
@@ -37,7 +37,7 @@ export function ControlledAutocomplete({
     !multiple &&
       setSelected(
         options.find((option) => isOptionEqualToValue && isOptionEqualToValue(option, value)) ??
-          null,
+        null,
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, options]);
