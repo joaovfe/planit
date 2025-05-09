@@ -4,21 +4,26 @@ export const participantSchema = z.object({
   id: z.number().optional(),
   name: z.string().optional(),
 });
-export const destinationSchema = z.object({
-  // type: z.object({
-  //   id: z.number().int().positive(),
-  //   name: z.string().min(1, 'O nome do destino não pode ser vazio'),
-  // }),
-  description: z.string().optional(),
-  name: z.string().optional(),
-});
+export const destinationSchema = z
+  .object({
+    // type: z.object({
+    //   id: z.number().int().positive(),
+    //   name: z.string().min(1, 'O nome do destino não pode ser vazio'),
+    // }),
+    id: z.number().optional(),
+    description: z.string().optional(),
+    name: z.string().optional(),
+  })
+  .optional();
 
 export const tripCreateSchema = z.object({
-  name: z.string().min(5, 'Nome da viagem obrigatório!'),
-  country: z.string().optional(),
-  state: z.string().optional(),
+  name: z.string().optional(),
+  user: z.object({}).optional(),
+  // country: z.string().optional(),
+  // state: z.string().optional(),
   destination: z
     .object({
+      id: z.number().optional(),
       description: z.string().optional(),
       name: z.string().optional(),
       type: z.object({
@@ -27,10 +32,11 @@ export const tripCreateSchema = z.object({
       }),
     })
     .optional(),
-  city: z.string().min(1, 'Campo Obrigatório'),
+  // city: z.string().min(1, 'Campo Obrigatório'),
   participants: z.array(participantSchema).optional(),
   startDate: z.date().nullable().optional(),
   endDate: z.date().nullable().optional(),
+  baggageSuggestion: z.array(z.string()).optional(),
 });
 
 export type TripCreateData = z.infer<typeof tripCreateSchema>;

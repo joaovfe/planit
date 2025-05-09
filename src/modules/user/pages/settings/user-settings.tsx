@@ -32,7 +32,6 @@ export default function UserSettings() {
   const methods = useForm<UserUpdateSelfData>({
     defaultValues: {
       name: '',
-      username: '',
       email: '',
       phone: '',
       dateOfBirth: new Date(0),
@@ -68,7 +67,6 @@ export default function UserSettings() {
 
       methods.reset({
         name: foundUser.name ?? '',
-        username: foundUser.username ?? '',
         email: foundUser.email ?? '',
         // phone: foundUser.phone ?? '',
         // dateOfBirth: foundUser.dateOfBirth ?? null,
@@ -97,8 +95,7 @@ export default function UserSettings() {
 
   function submit(data: UserUpdateSelfData) {
     const dto: UserUpdateSelfDto = {
-      name: data.name,
-      username: data.username,
+      name: data.name ?? '',
       email: data.email,
       password: data.password,
       phone: data.phone ?? '',

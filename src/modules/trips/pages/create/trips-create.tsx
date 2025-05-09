@@ -10,7 +10,7 @@ import {
 } from '@/shared/components';
 import { formatErrorForNotification } from '@/shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -18,6 +18,8 @@ import { CreateTripDto } from '../../domain/dto/create-trip.dto';
 import { TripCreateData, tripCreateSchema } from '../../domain/schemas/trip-create.schema';
 import { TripRepository } from '../../repositories/trips.repository';
 import { TripCreateForm } from './components/trips-create-form';
+import { useAuth } from '@/modules/auth/hooks';
+import { DestinationDto } from '../../domain/dto/destination.dto';
 
 interface FormWithTrip extends FieldValues {
     trip: TripCreateData;
@@ -27,24 +29,39 @@ interface FormWithTrip extends FieldValues {
 export function TripCreate() {
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { user } = useAuth()
     const repository = new TripRepository();
 
     const methods = useForm<FormWithTrip>({
         defaultValues: {
-            trip: {
-                name: '',
-                state: '',
-                city: '',
-                participants: [],
-                destination: {},
-                startDate: null,
-                endDate: null,
-            }
+            name: '',
+            // state: '',
+            // city: '',
+            baggageSuggestion: '',
+            user: user,
+            participants: [],
+            destination: [],
+            startDate: null,
+            endDate: null,
         },
         resolver: zodResolver(tripCreateSchema
 
         ),
     });
+
+
+    async function createBaggageItems(destination: DestinationDto) {
+        try {
+
+            repository.createBaggageItems(destination);
+
+            toast.success('Itens de bagagem cadastrados com sucesso!');
+        } catch (error) {
+            toast.error("Erro ao cadastrar itens de bagagem: " + formatErrorForNotification(error));
+        }
+    }
+
+
 
     async function create(data: CreateTripDto) {
         if (loading) return;
@@ -56,8 +73,8 @@ export function TripCreate() {
 
             await repository.create(data);
 
-            toast.success('Usuário cadastrado com sucesso!');
-            navigate(EAuthenticatedPath.USERS);
+            toast.success('Viagem cadastrada com sucesso!');
+            navigate(EAuthenticatedPath.TRIP);
         } catch (error) {
             toast.error(formatErrorForNotification(error));
         } finally {
@@ -65,21 +82,24 @@ export function TripCreate() {
         }
     }
 
+
     async function submit(data: FormWithTrip) {
 
         console.log('data: ', data);
 
         const trip = {
-            name: data.trip.name,
-            country: data.trip.country,
-            state: data.trip.state,
-            destination: data.trip.destination,
-            participants: data.trip.participants,
-            startDate: data.trip.startDate,
-            endDate: data.trip.endDate,
-            city: data.trip.city,
+            name: data.name,
+            user: user,
+            baggageSuggestion: data.baggageSuggestion,
+            // country: data.trip.country,
+            // state: data.trip.state,
+            destination: data.destination,
+            participants: data.participants,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            // city: data.trip.city,
         };
-        
+
         create(trip);
     }
 

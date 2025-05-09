@@ -11,9 +11,11 @@ import {
 import { IMenu, IOption } from '@/shared/domain';
 
 import { useAuth } from '@/modules/auth/hooks';
+import { useTrip } from '@/modules/trips/hooks/trip.hook';
 import { useTripsListParams } from '@/modules/trips/hooks/trips-list-params.hook';
 import { TripRepository } from '@/modules/trips/repositories/trips.repository';
-import { useUser } from '@/modules/user/hooks';
+import { formatDate } from '@/shared/utils';
+import { Chip } from '@mui/material';
 
 export function TripListTable() {
     const { user } = useAuth();
@@ -24,12 +26,13 @@ export function TripListTable() {
     const repository = new TripRepository();
 
     const { params, onChangePagination } = useTripsListParams();
-    const { deleteUser } = useUser();
+    const { deleteTrip } = useTrip();
 
     const [toggleColumns, setToggleColumns] = useState<Record<string, IOption<boolean>>>({
         user: { label: "Criador", value: true },
         name: { label: 'Nome', value: true },
-        departureDateTime: { label: "Data da viagem", value: true },
+        endDate: { label: "Data final", value: true },
+        startDate: { label: "Data inicial", value: true },
         season: { label: "Estação", value: true },
         participants: { label: "Participantes", value: true }
 
@@ -62,13 +65,22 @@ export function TripListTable() {
         },
 
         {
-            name: 'departureDatetime',
-            label: 'Data da Viagem',
+            name: 'startDate',
+            label: 'Inicio da Viagem',
             options: {
                 display: true,
                 customBodyRender: (value: string) => {
-                    const date = new Date(value);
-                    return date.toLocaleString('pt-BR');
+                    return formatDate(value);
+                },
+            },
+        },
+        {
+            name: 'endDate',
+            label: 'Final da Viagem',
+            options: {
+                display: true,
+                customBodyRender: (value: string) => {
+                    return formatDate(value);
                 },
             },
         },
@@ -78,25 +90,31 @@ export function TripListTable() {
             options: {
                 customBodyRender: (participants: any[]) => {
                     if (!participants || participants.length === 0) return 'Nenhum';
+                    <Chip
+
+
+                    />
+
+
                     return participants.map(p => p.name).join(', ');
                 },
                 display: true,
             }
         },
         {
-            name: 'season',
-            label: 'Estação',
-            options: {
-                customBodyRender: (season: any) => season?.name ?? '-',
-                display: true,
-            },
-        },
-
-        {
             name: 'user',
             label: 'Criado por',
             options: {
-                customBodyRender: (user: any) => user?.name ?? '-',
+                customBodyRender: (user: any) => {
+                    if (!user || !user.name) return '-';
+
+                    return <Chip label={user.name} sx={{
+                        color: 'text.primary',
+                        height: 16,
+                        lineHeight: 1,
+                        letterSpacing: 0.2,
+                    }} />;
+                },
                 display: true,
             },
         },
@@ -129,7 +147,7 @@ export function TripListTable() {
                     if (canDelete) {
                         items.push({
                             label: 'Excluir',
-                            action: () => deleteUser(id, mutate),
+                            action: () => deleteTrip(id, mutate),
                         });
                     }
 

@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { ControlledEnum, ControlledText } from '@/shared/components';
 
 import { useAuth } from '@/modules/auth/hooks';
-import { ERoleReference, ERoleReferenceTranslate, ERoleUserReference } from '@/modules/role/domain';
+import { ERoleReferenceTranslate, ERoleUserReference } from '@/modules/role/domain';
 import { RoleCreateData } from '@/modules/role/domain/schemas/role-create.schema';
 
 export function RoleCreateFilter() {
@@ -18,7 +18,7 @@ export function RoleCreateFilter() {
         <ControlledEnum
           label='Perfil de Referencia'
           name='reference'
-          options={user?.role?.reference === ERoleReference.ADMIN ? ERoleReference : ERoleUserReference}
+          options={user?.role?.roleName === ERoleUserReference.ADMIN ? ERoleUserReference : ERoleUserReference}
           translate={ERoleReferenceTranslate}
           control={control}
         />

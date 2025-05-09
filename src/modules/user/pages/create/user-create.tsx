@@ -1,4 +1,5 @@
 import { EAuthenticatedPath } from '@/core/router';
+import { ERoleUserReference } from '@/modules/role/domain';
 import {
   LinkButton,
   LoadingButton,
@@ -14,11 +15,10 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { UserForm } from './components/user-create-form';
-import { EStatus } from '@/shared/domain';
-import { UserCreateFilter } from './components/user-create-filter';
-import { UserRepository } from '../../repositories';
 import { UserCreateDTO, UserCreateData, userCreateSchema } from '../../domain';
+import { UserRepository } from '../../repositories';
+import { UserCreateFilter } from './components/user-create-filter';
+import { UserForm } from './components/user-create-form';
 
 export function UserCreate() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,10 +28,12 @@ export function UserCreate() {
   const methods = useForm<UserCreateData>({
     defaultValues: {
       name: '',
-      username: '',
       email: '',
       password: '',
-      status: EStatus.ACTIVE,
+      countryDesired: undefined,
+      climatePreference: undefined,
+      role: ERoleUserReference.USER,
+      seasonPreference: undefined,
       registration: '',
     },
     resolver: zodResolver(userCreateSchema),
@@ -56,13 +58,13 @@ export function UserCreate() {
 
   async function submit(data: UserCreateData) {
     const user = {
-      name: data.name,
-      username: data.username,
-      registration: data.registration,
+      name: data.name!,
       email: data.email,
       password: data.password,
-      status: data.status,
-      roleId: data.role?.id
+      countryDesired: data.countryDesired,
+      climatePreference: data.climatePreference,
+      seasonPreference: data.seasonPreference,
+      roles: data.role
     }
     create(user);
   }

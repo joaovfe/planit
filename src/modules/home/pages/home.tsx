@@ -9,6 +9,7 @@ import { DestinationCardProps } from '../destination/pages/components/list/desti
 import { Cards, HomeRepository } from '../repositories/home-repository';
 import { DestinationRepository } from '../destination/repositories/destination.repository';
 import { DestinationDto } from '../destination/domain/dto/destination.dto';
+import { TripRepository } from '@/modules/trips/repositories/trips.repository';
 // import { useForm } from 'react-hook-form';
 
 export function Home() {
@@ -19,6 +20,7 @@ export function Home() {
       description: '',
     },
   ]);
+  const [tripSuggestion, setTripSuggestion] = useState<string | null>(null);
   // const { user } = useAuth();
   // const { control, watch } = useForm({
   //   defaultValues: {
@@ -30,6 +32,7 @@ export function Home() {
   // const level = watch('level');
   // const productivePhaseRepository = new ProductivePhaseRepository();
   const repository = new DestinationRepository();
+  const tripRepository = new TripRepository();
   // const { params, onChangePagination } = useProductivePhaseListParams();
   // const { data, isLoading, error, mutate } = useSWR(
   //   [
@@ -43,6 +46,19 @@ export function Home() {
     repository.list().then((value) => {
       setCards(value);
     });
+
+    const fetchSuggestion = async () => {
+      try {
+        const suggestion = await tripRepository.suggestTrip();
+        setTripSuggestion(suggestion.message);
+        console.log('suggestion: ', suggestion);
+      } catch (error) {
+        console.error('Erro ao buscar sugestão de viagem', error);
+      }
+    };
+
+
+    fetchSuggestion();
     //   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -114,6 +130,19 @@ export function Home() {
           <AlarmLogTable logs={data.data} />
         </Grid>
       )} */}
+
+      {tripSuggestion && (
+        <Card variant='outlined' sx={{ mb: 2, borderRadius: 2 }}>
+          <CardContent>
+            <Typography variant='subtitle1' fontWeight='bold'>
+              Sugestão de Destino:
+            </Typography>
+            <Typography variant='body2'>
+              {tripSuggestion}
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
 
       <PageCard sx={{ flexGrow: 1 }}>
         <Grid spacing={2} container>

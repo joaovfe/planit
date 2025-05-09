@@ -1,17 +1,14 @@
-import { FieldValues, UseControllerProps } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { AutocompleteProps } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { FieldValues, UseControllerProps } from 'react-hook-form';
 
 import { formatErrorForNotification } from '@/shared/utils/error';
 
 
 
+import { User, UserListDTO } from '@/modules/user/domain';
+import { UserRepository } from '@/modules/user/repositories';
 import { ControlledAutocomplete } from './';
-import { useAuth } from '@/modules/auth/hooks';
-import { TripRepository } from '@/modules/trips/repositories/trips.repository';
-import { Trips } from '@/modules/trips/domain/entities/trip.entity';
-import { TripListDto } from '@/modules/trips/domain/dto/trips-list.dto';
-import { ParticipantsDto } from '@/modules/trips/domain/dto/participants.dto';
 
 interface Props<T extends FieldValues>
     extends UseControllerProps<T>,
@@ -26,7 +23,7 @@ interface Props<T extends FieldValues>
     > {
     label?: string;
     placeholder?: string;
-    optionsParams?: TripListDto;
+    optionsParams?: UserListDTO;
     required?: boolean;
 }
 
@@ -35,13 +32,13 @@ export function ControlledParticipants<T extends FieldValues>({
     ...props
 }: Props<T>) {
 
-    const repository = new TripRepository();
+    const repository = new UserRepository();
 
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | undefined>();
-    const [participants, setParticipants] = useState<Array<ParticipantsDto>>([]);
+    const [participants, setParticipants] = useState<Array<User>>([]);
 
-    async function getCongregations() {
+    async function getParticipants() {
         if (loading) return;
 
         try {
@@ -50,14 +47,13 @@ export function ControlledParticipants<T extends FieldValues>({
 
             const { data } = await repository.list(optionsParams);
 
-            const participantsData = data
-                ?.map(trip => trip.participants)
-                .flat()
-                .filter((p): p is ParticipantsDto => p !== undefined);
 
-            setParticipants(
-                participantsData
-            );
+
+            setParticipants(data);
+
+            // setParticipants(
+            //     participantsData
+            // );
             console.log('participants: ', participants);
         } catch (error) {
             setError(formatErrorForNotification(error));
@@ -67,8 +63,14 @@ export function ControlledParticipants<T extends FieldValues>({
     }
 
     useEffect(() => {
-        getCongregations();
+        getParticipants();
     }, []);
+
+
+    useEffect(() => {
+        console.log('participants atualizados:', participants);
+    }, [participants]);
+
 
     return (
         <ControlledAutocomplete

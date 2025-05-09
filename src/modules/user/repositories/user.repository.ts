@@ -19,11 +19,11 @@ export class UserRepository extends Repository {
     UserRepository.instance = this;
   }
 
-  public async list(params: UserListDTO): Promise<IPaginationResponse<User>> {
-    const { status, data: response } = await this.http.get<IPaginationResponse<User>>('/', {
+  public async list(params?: UserListDTO): Promise<IPaginationResponse<User>> {
+    const { status, data: response } = await this.http.get<IPaginationResponse<User>>('', {
       params: {
-        ...params.filter,
-        ...params.pagination,
+        ...params?.pagination,
+        ...params?.filter,
       },
     });
 
@@ -49,7 +49,7 @@ export class UserRepository extends Repository {
   }
 
   public async create(record: UserCreateDTO): Promise<User> {
-    const { status, data } = await this.http.post<User, UserCreateDTO>('/', record);
+    const { status, data } = await this.http.post<User, UserCreateDTO>('', record);
 
     if (this.isOK(status)) return new User(data);
 
@@ -57,7 +57,7 @@ export class UserRepository extends Repository {
   }
 
   public async update(id: ID, record: UserUpdateDTO): Promise<User> {
-    const { status, data } = await this.http.patch<User, UserUpdateDTO>(`/${id}`, record);
+    const { status, data } = await this.http.put<User, UserUpdateDTO>(`/${id}`, record);
 
     if (this.isOK(status)) return new User(data);
 
@@ -95,7 +95,4 @@ export class UserRepository extends Repository {
 
     throw new Error('Ops, algo inesperado aconteceu!');
   }
-
-
-
 }

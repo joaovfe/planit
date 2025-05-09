@@ -8,6 +8,7 @@ import { ControlledAutocomplete } from '.';
 import { DestinationListDTO } from '@/modules/home/destination/domain/dto/destination-list.dto';
 import { DestinationRepository } from '@/modules/home/destination/repositories/destination.repository';
 import { DestinationEntity } from '@/modules/home/destination/domain/entities/destination.entity';
+import { TripRepository } from '@/modules/trips/repositories/trips.repository';
 
 
 interface Props
@@ -27,11 +28,8 @@ interface Props
 
 export function ControlledDestination({ optionsParams, ...props }: Props) {
     const repository = new DestinationRepository();
-
     const [loading, setLoading] = useState<boolean>(false);
-
     const [error, setError] = useState<string | undefined>();
-
     const [destination, setDestination] = useState<Array<DestinationEntity>>([]);
 
     async function getDestinations() {
@@ -42,7 +40,6 @@ export function ControlledDestination({ optionsParams, ...props }: Props) {
             setError(undefined);
 
             const destination = await repository.list();
-
             setDestination(destination);
         } catch (error) {
             setError(formatErrorForNotification(error));
@@ -55,7 +52,6 @@ export function ControlledDestination({ optionsParams, ...props }: Props) {
         getDestinations();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
     return (
         <ControlledAutocomplete
             {...props}
@@ -67,3 +63,4 @@ export function ControlledDestination({ optionsParams, ...props }: Props) {
         />
     );
 }
+

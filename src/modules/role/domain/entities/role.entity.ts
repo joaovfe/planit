@@ -1,12 +1,8 @@
-import { ERoleReference } from '../enums';
+import { ERoleUserReference } from '../enums';
 
 export class Role {
   id: number = 0;
-  name: string = '';
-  reference?: ERoleReference;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  roleName: ERoleUserReference = ERoleUserReference.USER;
 
   public constructor(partial: Partial<Role>) {
     Object.assign(this, { ...partial });
