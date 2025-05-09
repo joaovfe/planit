@@ -1,15 +1,14 @@
 // import { useAuth } from '@/modules/auth/hooks';
 // import { useProductivePhaseListParams } from '@/modules/company/hooks/productive-phase-list-params.hook';
-import { LinkButton, Page, PageButtons, PageCard, PageHeader, PageTitle } from '@/shared/components';
+import { Page, PageCard, PageHeader, PageTitle } from '@/shared/components';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 // import useSWR from 'swr';
 // import { ProductivePhaseListTable } from '../components/productive-phase-list-table';
-import { useEffect, useState } from 'react';
-import { DestinationCardProps } from '../destination/pages/components/list/destination-card';
-import { Cards, HomeRepository } from '../repositories/home-repository';
-import { DestinationRepository } from '../destination/repositories/destination.repository';
-import { DestinationDto } from '../destination/domain/dto/destination.dto';
 import { TripRepository } from '@/modules/trips/repositories/trips.repository';
+import { useEffect, useState } from 'react';
+import { DestinationDto } from '../destination/domain/dto/destination.dto';
+import { DestinationCardProps } from '../destination/pages/components/list/destination-card';
+import { DestinationRepository } from '../destination/repositories/destination.repository';
 // import { useForm } from 'react-hook-form';
 
 export function Home() {

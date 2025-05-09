@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { ControlledDebounce, ControlledEnum } from '@/shared/components';
 
 import { useAuth } from '@/modules/auth/hooks';
-import { ERoleReference, ERoleReferenceTranslate, ERoleUserReference } from '@/modules/role/domain';
+import { ERoleReferenceTranslate, ERoleUserReference } from '@/modules/role/domain';
 import { IRoleListFilter } from '@/modules/role/domain/interfaces/role-list-filter.interface';
 import { useRoleListParams } from '@/modules/role/hooks/role-list-params.hook';
 
@@ -43,7 +43,7 @@ export function RoleListFilter() {
         <ControlledEnum
           label='Perfil de Referencia'
           name='reference'
-          options={user?.role?.reference === ERoleReference.ADMIN ? ERoleReference : ERoleUserReference}
+          options={user?.role?.roleName === ERoleUserReference.ADMIN ? ERoleUserReference : ERoleUserReference}
           translate={ERoleReferenceTranslate}
           control={control}
         />
@@ -55,7 +55,7 @@ export function RoleListFilter() {
       </Grid> : null
       } */}
 
-      <Grid item md={user?.role?.reference === ERoleReference.ADMIN ? 6 : 9} sm={6} xs={6}>
+      <Grid item md={user?.role?.roleName === ERoleUserReference.ADMIN ? 6 : 9} sm={6} xs={6}>
         <ControlledDebounce label='Procurar' name='search' control={control} />
       </Grid>
     </Grid>

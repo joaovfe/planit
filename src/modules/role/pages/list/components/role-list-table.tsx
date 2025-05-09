@@ -5,7 +5,7 @@ import {
   EAbilityActionTranslate,
   EAbilityCodes,
   EAbilityCodesTranslate,
-  ERoleReference,
+  ERoleUserReference,
   Role,
 } from '@/modules/role/domain';
 import { useRoleListParams } from '@/modules/role/hooks/role-list-params.hook';
@@ -37,8 +37,8 @@ export function RoleListTable() {
     permissions: { label: 'Permissões', value: true },
   });
 
-  const { data, isLoading, error, mutate } = useSWR([`role-list-${user?.id}`, params], ([_url, value]) =>
-    roleRepository.list(value),
+  const { data, isLoading, error, mutate } = useSWR([`role-list-${user?.id}`, params], ([_url]) =>
+    roleRepository.list(),
   );
 
   function groupByField(list: Ability[], field: string) {
@@ -238,12 +238,11 @@ export function RoleListTable() {
   const options: MUIDataTableOptions = {
     page: (params.pagination.skip ?? 1) - 1,
     rowsPerPage: params.pagination.take,
-    count: data?.total,
 
     setRowProps: () => ({ style: { cursor: 'pointer' } }),
 
     onRowClick: (_, { dataIndex }) => {
-      const { id } = data?.data[dataIndex] as any;
+      const { id } = data?.[dataIndex] as any;
       if (id) navigate(`./${id}`);
     },
 
@@ -279,15 +278,15 @@ export function RoleListTable() {
         loading={isLoading}
         data={
           data
-            ? user?.role?.reference === ERoleReference.ADMIN
-              ? data.data
-              : data.data
-                .filter((role: Role) => role.reference !== ERoleReference.ADMIN)
+            ? user?.role?.roleName === ERoleUserReference.ADMIN
+              ? data
+              : data
+                .filter((role: Role) => role.roleName !== ERoleUserReference.ADMIN)
                 .map((role: Role) => role)
             : []
         }
         columns={
-          user?.role?.reference === ERoleReference.ADMIN
+          user?.role?.roleName === ERoleUserReference.ADMIN
             ? columns
             : columns.filter((col: any) => col.name !== 'company').map((col: any) => col)
         }

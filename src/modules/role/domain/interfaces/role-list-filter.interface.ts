@@ -1,7 +1,7 @@
-import { ERoleReference } from '../enums';
+import { ERoleUserReference } from '../enums';
 
 export interface IRoleListFilter {
   name?: any;
-  reference?: ERoleReference;
+  reference?: ERoleUserReference;
   search?: string;
 }

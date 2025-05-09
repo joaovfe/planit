@@ -1,4 +1,5 @@
 import { EAuthenticatedPath } from '@/core/router';
+import { useAuth } from '@/modules/auth/hooks';
 import {
     LinkButton,
     LoadingButton,
@@ -10,7 +11,7 @@ import {
 } from '@/shared/components';
 import { formatErrorForNotification } from '@/shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -18,8 +19,6 @@ import { CreateTripDto } from '../../domain/dto/create-trip.dto';
 import { TripCreateData, tripCreateSchema } from '../../domain/schemas/trip-create.schema';
 import { TripRepository } from '../../repositories/trips.repository';
 import { TripCreateForm } from './components/trips-create-form';
-import { useAuth } from '@/modules/auth/hooks';
-import { DestinationDto } from '../../domain/dto/destination.dto';
 
 interface FormWithTrip extends FieldValues {
     trip: TripCreateData;
@@ -48,18 +47,6 @@ export function TripCreate() {
 
         ),
     });
-
-
-    async function createBaggageItems(destination: DestinationDto) {
-        try {
-
-            repository.createBaggageItems(destination);
-
-            toast.success('Itens de bagagem cadastrados com sucesso!');
-        } catch (error) {
-            toast.error("Erro ao cadastrar itens de bagagem: " + formatErrorForNotification(error));
-        }
-    }
 
 
 

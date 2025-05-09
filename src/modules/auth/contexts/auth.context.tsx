@@ -5,6 +5,7 @@ import { useLocalStorage } from 'usehooks-ts';
 
 import { EUnauthenticatedPath } from '@/core/router';
 
+import { TripRepository } from '@/modules/trips/repositories/trips.repository';
 import { toast } from 'react-toastify';
 import {
   EAuthAction,
@@ -15,7 +16,6 @@ import {
   LoginResponseDTO
 } from '../domain';
 import { AuthRepository } from '../repositories';
-import { TripRepository } from '@/modules/trips/repositories/trips.repository';
 
 interface Props {
   children: ReactNode;
@@ -43,7 +43,6 @@ function authReducer(state: IAuth, action: IAuthAction) {
 
 export function AuthProvider({ children }: Props) {
   const repository = new AuthRepository();
-  const tripRepository = new TripRepository();
 
   const navigate = useNavigate();
   const location = useLocation();

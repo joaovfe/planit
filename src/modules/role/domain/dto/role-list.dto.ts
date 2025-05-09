@@ -1,10 +1,10 @@
 import { IPaginationRequest } from '@/shared/domain';
-import { ERoleReference } from '../enums';
+import { ERoleUserReference } from '../enums';
 
 export interface RoleListFilterDTO {
   search?: string;
   name?: string;
-  reference?: ERoleReference;
+  reference?: ERoleUserReference;
   companyId?: number;
 }
 

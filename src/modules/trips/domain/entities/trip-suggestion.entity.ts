@@ -1,4 +1,3 @@
-import { ParticipantsDto } from '../dto/participants.dto';
 
 export class TripSuggestion {
   message: string = '';
