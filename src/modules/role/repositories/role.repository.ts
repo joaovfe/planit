@@ -1,10 +1,9 @@
 import { Repository } from '@/core/http/repository';
 
-import { ID, IPaginationResponse } from '@/shared/domain';
-import { isArray } from '@/shared/utils';
+import { ID } from '@/shared/domain';
 
 import { Role } from '../domain';
-import { RoleCreateDTO, RoleListDTO, RoleUpdateDTO } from '../domain/dto';
+import { RoleCreateDTO, RoleUpdateDTO } from '../domain/dto';
 
 export class RoleRepository extends Repository {
   static instance: RoleRepository;
@@ -19,31 +18,17 @@ export class RoleRepository extends Repository {
     RoleRepository.instance = this;
   }
 
-  public async list(params: RoleListDTO): Promise<IPaginationResponse<Role>> {
-    const { status, data: response } = await this.http.get<IPaginationResponse<Role>>('/', {
-      params: {
-        ...params.filter,
-        ...params.pagination,
-      },
-    });
+  public async list(): Promise<Role[]> {
+    const { status, data } = await this.http.get<Role[]>(``);
 
-    if (this.isOK(status)) {
-      const { pages, total, data } = response;
-
-      return {
-        pages: pages ?? 1,
-        total: total ?? 0,
-        data: isArray(data) ? data.map((item) => new Role(item)) : ([] as Array<Role>),
-      };
-    }
+    if (this.isOK(status)) return data;
 
     throw new Error('Ops, algo inesperado aconteceu!');
   }
-
   public async listAllAbilities(): Promise<any> {
     const { status, data } = await this.http.get<Role>(`/1`);
 
-    if (this.isOK(status)) return new Role(data).reference;
+    if (this.isOK(status)) return new Role(data).roleName;
 
     throw new Error('Ops, algo inesperado aconteceu!');
   }

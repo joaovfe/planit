@@ -1,17 +1,15 @@
 import { Repository } from '@/core/http/repository';
 
-import { ID, IPaginationResponse } from '@/shared/domain';
-import { isArray } from '@/shared/utils';
-import { DestinationEntity } from '../domain/entities/destination.entity';
-import { DestinationListDTO } from '../domain/dto/destination-list.dto';
-import { DestinationDto } from '../domain/dto/destination.dto';
+import { ID } from '@/shared/domain';
 import { DestinationCreateDto } from '../domain/dto/destination-create.dto';
+import { DestinationDto } from '../domain/dto/destination.dto';
+import { DestinationEntity } from '../domain/entities/destination.entity';
 
 export class DestinationRepository extends Repository {
   static instance: DestinationRepository;
 
   constructor() {
-    super('fornos');
+    super('destino');
 
     if (DestinationRepository.instance) {
       return DestinationRepository.instance;
@@ -19,42 +17,21 @@ export class DestinationRepository extends Repository {
 
     DestinationRepository.instance = this;
   }
+  public async list(): Promise<DestinationDto[]> {
+    const { status, data } = await this.http.get('');
 
-  public async list(params: DestinationListDTO): Promise<IPaginationResponse<DestinationEntity>> {
-    const { status, data: response } = await this.http.get<IPaginationResponse<DestinationEntity>>(
-      '',
-      {
-        params: {
-          ...params.filter,
-          ...params.pagination,
-        },
-      },
-    );
-
-    if (this.isOK(status)) {
-      const { pages, total, data } = response;
-
-      return {
-        pages: pages ?? 1,
-        total: total ?? 0,
-        data: isArray(data)
-          ? data.map((item) => {
-              return new DestinationEntity(item);
-            })
-          : ([] as Array<DestinationEntity>),
-      };
-    }
+    if (this.isOK(status)) return data as DestinationDto[];
 
     throw new Error('Ops, algo inesperado aconteceu!');
   }
 
-  //   public async get(id: ID): Promise<User> {
-  //     const { status, data } = await this.http.get<User>(`/${id}`);
+  public async get(id: ID): Promise<DestinationEntity> {
+    const { status, data } = await this.http.get<DestinationEntity>(`/${id}`);
 
-  //     if (this.isOK(status)) return new User(data);
+    if (this.isOK(status)) return new DestinationEntity(data);
 
-  //     throw new Error('Ops, algo inesperado aconteceu!');
-  //   }
+    throw new Error('Ops, algo inesperado aconteceu!');
+  }
 
   public async create(record: DestinationCreateDto): Promise<DestinationEntity> {
     const { status, data } = await this.http.post<DestinationEntity, DestinationCreateDto>(

@@ -11,15 +11,15 @@ import { RoleListDTO } from '@/modules/role/domain/dto';
 
 interface Props
   extends UseControllerProps<any>,
-    Omit<
-      AutocompleteProps<any, false, false, false>,
-      | 'defaultValue'
-      | 'name'
-      | 'renderInput'
-      | 'options'
-      | 'getOptionLabel'
-      | 'isOptionEqualToValue'
-    > {
+  Omit<
+    AutocompleteProps<any, false, false, false>,
+    | 'defaultValue'
+    | 'name'
+    | 'renderInput'
+    | 'options'
+    | 'getOptionLabel'
+    | 'isOptionEqualToValue'
+  > {
   label?: string;
   optionsParams?: RoleListDTO;
 }
@@ -40,7 +40,9 @@ export function ControlledRole({ optionsParams, ...props }: Props) {
       setLoading(true);
       setError(undefined);
 
-      const { data } = await repository.list({...optionsParams!});
+      const data = await repository.list();
+
+      console.log('data: ', data);
 
       setRoles(data);
     } catch (error) {
@@ -52,7 +54,7 @@ export function ControlledRole({ optionsParams, ...props }: Props) {
 
   useEffect(() => {
     getRoles();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -61,7 +63,7 @@ export function ControlledRole({ optionsParams, ...props }: Props) {
       options={roles}
       loading={loading}
       noOptionsText={error}
-      getOptionLabel={(role: Role) => role?.name ?? ''}
+      getOptionLabel={(role: Role) => role?.roleName ?? ''}
       isOptionEqualToValue={(option, selected) => option?.id === selected?.id}
     />
   );

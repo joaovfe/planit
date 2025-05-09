@@ -1,18 +1,26 @@
 // import { useAuth } from '@/modules/auth/hooks';
 // import { useProductivePhaseListParams } from '@/modules/company/hooks/productive-phase-list-params.hook';
-import { LinkButton, Page, PageButtons, PageHeader, PageTitle } from '@/shared/components';
+import { LinkButton, Page, PageButtons, PageCard, PageHeader, PageTitle } from '@/shared/components';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 // import useSWR from 'swr';
 // import { ProductivePhaseListTable } from '../components/productive-phase-list-table';
-import { useState } from 'react';
-import { Cards } from '../repositories/home-repository';
+import { useEffect, useState } from 'react';
+import { DestinationCardProps } from '../destination/pages/components/list/destination-card';
+import { Cards, HomeRepository } from '../repositories/home-repository';
+import { DestinationRepository } from '../destination/repositories/destination.repository';
+import { DestinationDto } from '../destination/domain/dto/destination.dto';
+import { TripRepository } from '@/modules/trips/repositories/trips.repository';
 // import { useForm } from 'react-hook-form';
 
 export function Home() {
-  const [cards] = useState<Cards>({
-    countAllAssets: 0,
-    countAllSubsetsCompany: 0,
-  });
+  const [cards, setCards] = useState<DestinationDto[]>([
+    {
+      id: 0,
+      name: '',
+      description: '',
+    },
+  ]);
+  const [tripSuggestion, setTripSuggestion] = useState<string | null>(null);
   // const { user } = useAuth();
   // const { control, watch } = useForm({
   //   defaultValues: {
@@ -23,7 +31,8 @@ export function Home() {
   // const searchText = watch('searchText');
   // const level = watch('level');
   // const productivePhaseRepository = new ProductivePhaseRepository();
-  // const homeRepository = new HomeRepository();
+  const repository = new DestinationRepository();
+  const tripRepository = new TripRepository();
   // const { params, onChangePagination } = useProductivePhaseListParams();
   // const { data, isLoading, error, mutate } = useSWR(
   //   [
@@ -33,35 +42,58 @@ export function Home() {
   //   ([_url, value]) => productivePhaseRepository.list(value),
   // );
 
-  // useEffect(() => {
-  //   homeRepository.get().then((value) => {
-  //     setCards(value);
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    repository.list().then((value) => {
+      setCards(value);
+    });
+
+    const fetchSuggestion = async () => {
+      try {
+        const suggestion = await tripRepository.suggestTrip();
+        setTripSuggestion(suggestion.message);
+        console.log('suggestion: ', suggestion);
+      } catch (error) {
+        console.error('Erro ao buscar sugestão de viagem', error);
+      }
+    };
+
+
+    fetchSuggestion();
+    //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+
+  const updateCards = async () => {
+    const updatedCards = await repository.list();
+    setCards(updatedCards);
+  };
+
+  console.log('cards: ', cards);
 
   return (
     <Page>
       <PageHeader>
-        <PageTitle toHome>Minhas Produções</PageTitle>
-        <PageButtons>
-          <LinkButton to='./novo' variant='contained' size='large' sx={{ minWidth: '180px' }}>
+        <PageTitle toHome>Destinos</PageTitle>
+        {/* <PageButtons> */}
+        {/* <LinkButton to='./novo' variant='contained' size='large' sx={{ minWidth: '180px' }}>
             Nova Viagem
-          </LinkButton>
-        </PageButtons>
+          </LinkButton> */}
+        {/* </PageButtons> */}
         <Grid spacing={3} container>
           <Grid xs={12} md={4} item>
-            <Card variant='outlined' sx={{ borderRadius: 2, flexGrow: 1, boxShadow: 1 }}>
-              <CardContent>
+            {/* <Card variant='outlined' sx={{ borderRadius: 2, flexGrow: 1, boxShadow: 1 }}> */}
+            {/* <CardContent>
                 <Typography variant='h6' component='div'>
                   Viagens cadastradas
                 </Typography>
                 <Typography variant='h5' color={'primary'}>
-                  {cards.countAllAssets}
+                  {cards[0].countAllAssets}
                 </Typography>
-              </CardContent>
-            </Card>
+              </CardContent> */}
+            {/* </Card> */}
           </Grid>
+
 
           {/* <Grid xs={12} md={4} item>
             <Card variant='outlined' sx={{ borderRadius: 2, flexGrow: 1, boxShadow: 1 }}>
@@ -99,32 +131,29 @@ export function Home() {
         </Grid>
       )} */}
 
-      {/* <PageCard sx={{ flexGrow: 1 }}> 
+      {tripSuggestion && (
+        <Card variant='outlined' sx={{ mb: 2, borderRadius: 2 }}>
+          <CardContent>
+            <Typography variant='subtitle1' fontWeight='bold'>
+              Sugestão de Destino:
+            </Typography>
+            <Typography variant='body2'>
+              {tripSuggestion}
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
+
+      <PageCard sx={{ flexGrow: 1 }}>
         <Grid spacing={2} container>
           <Grid md={12} item>
-            <Typography variant='h6'>Produções</Typography>
+            <Typography variant='h6'>Cátalogo</Typography>
           </Grid>
-          <Grid md={6} item>
-            <Grid item md={12}>
-              <ControlledDebounce name='level' control={control} label='Nível' fullWidth />
-            </Grid>
+          <Grid md={12} item>
+            <DestinationCardProps onUpdate={updateCards} />
           </Grid>
-          <Grid md={6} item>
-            <Grid item md={12}>
-              <ControlledDebounce name='searchText' control={control} label='Procurar' fullWidth />
-            </Grid>
-          </Grid> 
-           <Grid md={12} item>
-            <AlarmCardProps
-              name="name"
-              description="Descrição breve"
-              onDelete={() => console.log("Excluir")}
-              onHistory={() => console.log("Histórico")}
-              onRename={() => console.log("Renomear")}
-            />
-          </Grid> 
         </Grid>
-      </PageCard> */}
+      </PageCard>
     </Page>
   );
 }

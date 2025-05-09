@@ -1,11 +1,8 @@
-import { EDestinationType } from "../enums/destination-type.enum";
+import { DestinationType } from './destination-type.dto';
 
 export interface DestinationDto {
   id: number;
   name: string;
   description: string;
-  type: EDestinationType;
-  status: 'active' | 'inactive'; 
-  createdAt: string;
-  updatedAt: string;
+  type?: DestinationType;
 }

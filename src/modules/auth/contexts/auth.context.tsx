@@ -15,6 +15,7 @@ import {
   LoginResponseDTO
 } from '../domain';
 import { AuthRepository } from '../repositories';
+import { TripRepository } from '@/modules/trips/repositories/trips.repository';
 
 interface Props {
   children: ReactNode;
@@ -42,6 +43,7 @@ function authReducer(state: IAuth, action: IAuthAction) {
 
 export function AuthProvider({ children }: Props) {
   const repository = new AuthRepository();
+  const tripRepository = new TripRepository();
 
   const navigate = useNavigate();
   const location = useLocation();

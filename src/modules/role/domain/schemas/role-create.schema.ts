@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { ERoleReference } from '../enums';
 import { Ability } from '../entities';
+import { ERoleUserReference } from '../enums';
 export const roleCreateSchema = z.object({
   name: z.string().min(5, 'Nome do perfil obrigatório!'),
-  reference: z.nativeEnum(ERoleReference, {
+  reference: z.nativeEnum(ERoleUserReference, {
     required_error: 'Precisa selecionar um perfil de referência!',
     invalid_type_error: 'Perfil de referência inválido!',
   }),

@@ -67,11 +67,16 @@ export function UserUpdate() {
       return;
     }
 
+    console.log('data: ', data);
+
     update(id, {
       name: data.name,
       email: data.email,
-      roleId: data.role?.id,
-      hash_password: data.hash_password ?? undefined
+      password: data.password,
+      countryDesired: data.countryDesired,
+      climatePreference: data.climatePreference,
+      seasonPreference: data.seasonPreference,
+      roleName: data.role?.roleName,
     });
   }
 

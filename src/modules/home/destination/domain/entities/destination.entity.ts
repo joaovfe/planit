@@ -1,14 +1,10 @@
+import { DestinationType } from '../dto/destination-type.dto';
 
 export class DestinationEntity {
   id: number = 0;
-  nome: string = '';
-  nroForno: number = 0;
-  situacao?: string | null = null;
-
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
-
+  name: string = '';
+  description: string = '';
+  type?: DestinationType;
   constructor(partial: Partial<DestinationEntity>) {
     Object.assign(this, { ...partial });
   }

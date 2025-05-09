@@ -8,10 +8,10 @@ import { BrazilCity } from '../../domain';
 
 interface ControlledCityProps
   extends UseControllerProps<any>,
-    Omit<
-      AutocompleteProps<any, false, false, false>,
-      'defaultValue' | 'name' | 'renderInput' | 'options'
-    > {
+  Omit<
+    AutocompleteProps<any, false, false, false>,
+    'defaultValue' | 'name' | 'renderInput' | 'options'
+  > {
   label?: string;
   state?: string;
   disabledErrorOnValue?: boolean;
